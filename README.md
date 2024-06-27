@@ -1,4 +1,7 @@
 # DTW-G-Cubed
+
+Natural Gamma Radiation data used for this paper is stored in .csv files and is freely available through the National Offshore Petroleum Information Management System (NOPIMS, Geoscience Australia) (https://www.ga.gov.au/nopims).
+
 The repository contains the R scripts for the DTW calculations performed and presented for the G-Cubed paper on the methodology of DTW custom technique. 
 
 Figure 4 can be reproduced using the 'Picard1-U1464-StepPatterns.R' file. This file contains the DTW calculations using 4 different step patterns, followed by the codes to create the plot.
@@ -16,3 +19,14 @@ To create Figure 11, run the 3 scripts of 'Picard1-Angel2-DTW.R', 'Picard1-Minil
 To create Figure 3 of the standard and knowledge-based window, make sure to run the entire script of 'Picard1-Minilya1-DTW.R' file. This performs DTW with customized step pattern and windowing function. Also, run the 'CompareWindowBorders' to create the customized window borders. Then, run the 'CustomWindow.R' file.
 
 
+
+Shield: [![CC BY 4.0][cc-by-shield]][cc-by]
+
+This work is licensed under a
+[Creative Commons Attribution 4.0 International License][cc-by].
+
+[![CC BY 4.0][cc-by-image]][cc-by]
+
+[cc-by]: http://creativecommons.org/licenses/by/4.0/
+[cc-by-image]: https://i.creativecommons.org/l/by/4.0/88x31.png
+[cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
