@@ -1,19 +1,7 @@
-stepPattern <- function(v,norm=NA) {
-  obj <- NULL;
-  if(is.vector(v)) {
-    obj <- matrix(v,ncol=4,byrow=TRUE);
-  } else if(is.matrix(v)) {
-    obj <- v;
-  } else {
-    stop("stepPattern constructor only supports vector or matrix");
-  }
-  class(obj)<-"stepPattern";
-  attr(obj,"npat") <- max(obj[,1]);
-  attr(obj,"norm") <- norm;
-  return(obj);
-}
+# Warning: this step pattern was found empirically. It is NOT actually normalizable because the weights
+# are path-dependent.  See https://dynamictimewarping.github.io/faq/
 
-asymmetricP1.1 <- stepPattern(c(
+asymmetricP1.1 <- dtw:::stepPattern(c(
   1, 1 , 2 , -1 ,
   1, 0 , 1 , 1 ,
   1, 0 , 0 , 1 ,
