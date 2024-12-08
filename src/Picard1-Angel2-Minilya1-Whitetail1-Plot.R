@@ -1,6 +1,5 @@
-source("src/Picard1-Angel2-DTW.R")
-source("src/Picard1-Minilya1-DTW.R")
-source("src/Picard1-Whitetail1-DTW.R")
+
+setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/G-cubed/Figures/")
 
 pdf(file = "Figure 11.pdf", width = 8.27, height = 11, paper = "a4")
 

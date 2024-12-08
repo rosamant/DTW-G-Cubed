@@ -1,6 +1,3 @@
-# Install packages if missing
-install.packages(setdiff(c("dtw", "DescTools", "astrochron"), rownames(installed.packages())))
-
 # Import packages
 
 library(dtw)
@@ -9,12 +6,12 @@ library(astrochron)
 
 # Import Picard1 and Angel2 datasets
 
-Picard1 <- read.csv("data/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
+Picard1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Picard 1/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
 Picard1=Picard1[c(83:7750),] # Eocene-Miocene Unconformity
 head(Picard1)
 plot(Picard1, type="l", xlim = c(150, 1300), ylim = c(0, 50))
 
-Angel2 <- read.csv("data/Angel2.csv", header=TRUE, stringsAsFactors=FALSE)
+Angel2 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Angel 2/Angel2.csv", header=TRUE, stringsAsFactors=FALSE)
 Angel2=Angel2[c(1:8419),] # Oligocene-Miocene
 head(Angel2)
 plot(Angel2, type="l", xlim = c(100, 1400), ylim = c(0, 50))
@@ -47,7 +44,7 @@ Angel2_standardized = data.frame(Angel2_scaled$Center_win, Angel2_scaled$Average
 plot(Picard1_standardized, type="l", xlim = c(150, 1300), ylim = c(-20, 20), xlab = "Picard1 Resampled Depth", ylab = "Normalized GR")
 plot(Angel2_standardized, type="l", xlim = c(100, 1400), ylim = c(-20, 20), xlab = "Angel2 Resampled Depth", ylab = "Normalized GR")
 
-#### DTW with custom step pattern asymmetricP1 but no custom window ####
+#### DTW with step pattern asymmetricP1 and no knowledge-based step pattern or window  ####
 
 # Perform dtw
 system.time(al_a1_p1_p1 <- dtw(Angel2_standardized$Angel2_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
@@ -71,9 +68,9 @@ legend(x = max(Picard1_standardized$Picard1_scaled.Center_win)-320, y = max(Pica
 al_a1_p1_p1$normalizedDistance
 al_a1_p1_p1$distance
 
-#### DTW with custom step pattern asymmetricP1.1 and custom window ####
+#### DTW with stratigraphy-optimized step pattern asymmetricP1.1 and knowledge-based window ####
 
-# create matrix for the custom window
+# create matrix for the knowledge-based window
 
 compare.window <- matrix(data=TRUE,nrow=nrow(Angel2_standardized),ncol=nrow(Picard1_standardized))
 image(x=Picard1_standardized[,1],y=Angel2_standardized[,1],z=t(compare.window),useRaster=TRUE)
@@ -131,17 +128,25 @@ compare.window <- unname(as.matrix(compare.window))
 
 image(x=Picard1_standardized[,1],y=Angel2_standardized[,1],z=t(compare.window),useRaster=TRUE)
 
-# Define a custom window function for use in DTW
+# Define a knowledge-based window function for use in DTW
 win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
 
-# Perform dtw with custom window
-source("src/Custom Step Pattern.R")
+# Perform dtw with knowledge-based window
 system.time(al_a1_p1_ap1 <- dtw(Angel2_standardized$Angel2_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_a1_p1_ap1, type = "threeway")
 
 # DTW Distance measure
 al_a1_p1_ap1$normalizedDistance
 al_a1_p1_ap1$distance
+
+# Dtw Density plot
+
+plot(al_a1_p1_ap1, type = "density", xaxt = "n", yaxt = "n", xlab = "Angel-2", ylab = "Picard-1", cex.lab = 1.25)
+axis(1, at = c(776,2026,3276,4526,5776), labels = c(250,500,750,1000,1250), cex.axis = 1.25)
+axis(2, at = c(251,1251,2251,3251,4251,5251), labels = c(200,400,600,800,1000,1200), cex.axis = 1.25)
+points(border_coords, cex = 0.3)
+
+# Dtw knowledge-based window plot
 
 image(y = Picard1_standardized[,1], x = Angel2_standardized[,1], z = compare.window, useRaster = T)
 lines(Angel2_standardized$Angel2_scaled.Center_win[al_a1_p1_ap1$index1], Picard1_standardized$Picard1_scaled.Center_win[al_a1_p1_ap1$index2], col = "white", lwd = 2)

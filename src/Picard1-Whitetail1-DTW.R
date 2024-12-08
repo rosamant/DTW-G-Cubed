@@ -1,6 +1,3 @@
-# Install packages if missing
-install.packages(setdiff(c("dtw", "DescTools", "astrochron"), rownames(installed.packages())))
-
 # Import packages
 
 library(dtw)
@@ -9,12 +6,12 @@ library(astrochron)
 
 # Import Picard1 and Whitetail1 datasets
 
-Picard1 <- read.csv("data/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
+Picard1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Picard 1/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
 Picard1=Picard1[c(83:7750),] # Eocene-Miocene Unconformity
 head(Picard1)
 plot(Picard1, type="l", xlim = c(150, 1300), ylim = c(0, 50))
 
-Whitetail1 <- read.csv("data/Whitetail1.csv", header=TRUE, stringsAsFactors=FALSE)
+Whitetail1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Whitetail 1/Whitetail1.csv", header=TRUE, stringsAsFactors=FALSE)
 
 # Recorrecting attenuated signal
 W1 = Gmean(Whitetail1[c(1:320),2])
@@ -55,7 +52,7 @@ Whitetail1_standardized = data.frame(Whitetail1_scaled$Center_win, Whitetail1_sc
 plot(Picard1_standardized, type="l", xlim = c(150, 1300), ylim = c(-20, 20), xlab = "Picard1 Resampled Depth", ylab = "Normalized GR")
 plot(Whitetail1_standardized, type="l", xlim = c(1000, 1900), ylim = c(-20, 20), xlab = "Whitetail1 Resampled Depth", ylab = "Normalized GR")
 
-#### DTW with custom step pattern asymmetricP1 but no custom window ####
+#### DTW with step pattern asymmetricP1 and no knowledge-based step pattern or window ####
 
 # Perform dtw
 system.time(al_w1_p1_p1 <- dtw(Whitetail1_standardized$Whitetail1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
@@ -80,9 +77,9 @@ al_w1_p1_p1$normalizedDistance
 al_w1_p1_p1$distance
 
 
-#### DTW with custom step pattern asymmetricP1.1 and custom window ####
+#### DTW with stratigraphy-based step pattern asymmetricP1.1 and knowledge-based window ####
 
-# create matrix for the custom window
+# create matrix for the knowledge-based window
 
 compare.window <- matrix(data=TRUE,nrow=nrow(Whitetail1_standardized),ncol=nrow(Picard1_standardized))
 image(x=Picard1_standardized[,1],y=Whitetail1_standardized[,1],z=t(compare.window),useRaster=TRUE)
@@ -140,17 +137,25 @@ compare.window <- unname(as.matrix(compare.window))
 
 image(x=Picard1_standardized[,1],y=Whitetail1_standardized[,1],z=t(compare.window),useRaster=TRUE)
 
-# Define a custom window function for use in DTW
+# Define a knowledge-based window function for use in DTW
 win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
 
-# Perform dtw with custom window
-source("src/Custom Step Pattern.R")
+# Perform dtw with knowledge-based window
 system.time(al_w1_p1_ap1 <- dtw(Whitetail1_standardized$Whitetail1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_w1_p1_ap1, type = "threeway")
 
 # DTW Distance measure
 al_w1_p1_ap1$normalizedDistance
 al_w1_p1_ap1$distance
+
+# Dtw Density plot
+
+plot(al_w1_p1_ap1, type = "density", xaxt = "n", yaxt = "n", xlab = "Whitetail-1", ylab = "Picard-1", cex.lab = 1.5)
+axis(1, at = c(107,1107,2107,3107,4107), labels = c(1000,1200,1400,1600,1800), cex.axis = 1.5)
+axis(2, at = c(251,1251,2251,3251,4251,5251), labels = c(200,400,600,800,1000,1200), cex.axis = 1.5)
+points(border_coords, cex = 0.3)
+
+# Dtw knowledge-based window plot
 
 image(y = Picard1_standardized[,1], x = Whitetail1_standardized[,1], z = compare.window, useRaster = T)
 lines(Whitetail1_standardized$Whitetail1_scaled.Center_win[al_w1_p1_ap1$index1], Picard1_standardized$Picard1_scaled.Center_win[al_w1_p1_ap1$index2], col = "white", lwd = 2)

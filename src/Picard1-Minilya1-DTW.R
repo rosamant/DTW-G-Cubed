@@ -1,6 +1,3 @@
-# Install packages if missing
-install.packages(setdiff(c("dtw", "DescTools", "astrochron"), rownames(installed.packages())))
-
 # Import packages
 
 library(dtw)
@@ -9,12 +6,12 @@ library(astrochron)
 
 # Import Picard1 and Minilya1 datasets
 
-Picard1 <- read.csv("data/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
+Picard1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Picard 1/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
 Picard1=Picard1[c(83:7750),] # Eocene-Miocene Unconformity
 head(Picard1)
 plot(Picard1, type="l", xlim = c(150, 1300), ylim = c(0, 50))
 
-Minilya1 <- read.csv("data/Minilya_1.csv", header=TRUE, stringsAsFactors=FALSE)
+Minilya1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Minilya 1/Minilya_1.csv", header=TRUE, stringsAsFactors=FALSE)
 Minilya1=Minilya1[c(1:5613),] # Eocene-Miocene Unconformity
 head(Minilya1)
 plot(Minilya1, type="l", xlim = c(150, 1100), ylim = c(0, 50))
@@ -47,7 +44,7 @@ Minilya1_standardized = data.frame(Minilya1_scaled$Center_win, Minilya1_scaled$A
 plot(Picard1_standardized, type="l", xlim = c(150, 1300), ylim = c(-20, 20), xlab = "Picard1 Resampled Depth", ylab = "Normalized GR")
 plot(Minilya1_standardized, type="l", xlim = c(150, 1100), ylim = c(-20, 20), xlab = "Minilya1 Resampled Depth", ylab = "Normalized GR")
 
-#### DTW with step pattern asymmetricP1 and no custom step pattern or window ####
+#### DTW with step pattern asymmetricP1 and no knowledge-based step pattern or window ####
 
 # Perform dtw
 system.time(al_m1_p1_p1 <- dtw(Minilya1_standardized$Minilya1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
@@ -72,9 +69,9 @@ al_m1_p1_p1$normalizedDistance
 al_m1_p1_p1$distance
 
 
-#### DTW with custom step pattern asymmetricP1.1 and custom window ####
+#### DTW with stratigraphy-optimized step pattern asymmetricP1.1 and knowledge-based window ####
 
-# create matrix for the custom window
+# create matrix for the knowledge-based window
 
 compare.window <- matrix(data=TRUE,nrow=nrow(Minilya1_standardized),ncol=nrow(Picard1_standardized))
 image(x=Picard1_standardized[,1],y=Minilya1_standardized[,1],z=t(compare.window),useRaster=TRUE)
@@ -139,11 +136,10 @@ compare.window <- unname(as.matrix(compare.window))
 
 image(x=Picard1_standardized[,1],y=Minilya1_standardized[,1],z=t(compare.window),useRaster=TRUE)
 
-# Define a custom window function for use in DTW
+# Define a knowledge-based window function for use in DTW
 win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
 
-# Perform dtw with custom window
-source("src/Custom Step Pattern.R")
+# Perform dtw with knowledge-based window
 system.time(al_m1_p1_ap1 <- dtw(Minilya1_standardized$Minilya1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_m1_p1_ap1, type = "threeway")
 
@@ -158,7 +154,7 @@ axis(1, at = c(113,1113,2113,3113,4113), labels = c(200,400,600,800,1000), cex.a
 axis(2, at = c(251,1251,2251,3251,4251,5251), labels = c(200,400,600,800,1000,1200), cex.axis = 1.25)
 points(border_coords, cex = 0.3)
 
-# Dtw custom window plot
+# Dtw knowledge-based window plot
 
 image(y = Picard1_standardized[,1], x = Minilya1_standardized[,1], z = compare.window, useRaster = T, xlab = "Minilya-1", ylab = "Picard-1", cex.lab = 1.25, cex.axis = 1.25)
 lines(Minilya1_standardized$Minilya1_scaled.Center_win[al_m1_p1_ap1$index1], Picard1_standardized$Picard1_scaled.Center_win[al_m1_p1_ap1$index2], col = "white", lwd = 2)
