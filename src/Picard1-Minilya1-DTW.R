@@ -6,12 +6,12 @@ library(astrochron)
 
 # Import Picard1 and Minilya1 datasets
 
-Picard1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Picard 1/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
+Picard1 <- read.csv("data/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
 Picard1=Picard1[c(83:7750),] # Eocene-Miocene Unconformity
 head(Picard1)
 plot(Picard1, type="l", xlim = c(150, 1300), ylim = c(0, 50))
 
-Minilya1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Minilya 1/Minilya_1.csv", header=TRUE, stringsAsFactors=FALSE)
+Minilya1 <- read.csv("data/Minilya_1.csv", header=TRUE, stringsAsFactors=FALSE)
 Minilya1=Minilya1[c(1:5613),] # Eocene-Miocene Unconformity
 head(Minilya1)
 plot(Minilya1, type="l", xlim = c(150, 1100), ylim = c(0, 50))
