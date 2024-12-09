@@ -6,12 +6,12 @@ library(astrochron)
 
 # Import Picard1 and Whitetail1 datasets
 
-Picard1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Picard 1/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
+Picard1 <- read.csv("data/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
 Picard1=Picard1[c(83:7750),] # Eocene-Miocene Unconformity
 head(Picard1)
 plot(Picard1, type="l", xlim = c(150, 1300), ylim = c(0, 50))
 
-Whitetail1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Whitetail 1/Whitetail1.csv", header=TRUE, stringsAsFactors=FALSE)
+Whitetail1 <- read.csv("data/Whitetail1.csv", header=TRUE, stringsAsFactors=FALSE)
 
 # Recorrecting attenuated signal
 W1 = Gmean(Whitetail1[c(1:320),2])
