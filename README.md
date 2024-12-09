@@ -6,19 +6,17 @@ Natural Gamma Radiation data used for this paper is stored in .csv files and is 
 
 The repository contains the R scripts for the DTW calculations performed and presented for the Paleoceanography and Paleoclimatology paper on the methodology of DTW custom technique. 
 
-Figure 4 can be reproduced using the `Picard1-U1464-StepPatterns.R` file. This file contains the DTW calculations using 4 different step patterns, followed by the codes to create the plot.
+Figure 6 can be reproduced using the `U1463_U1464_DTW.R` file. This file contains the DTW calculations using 5 different step patterns and 3 windowing functions, followed by the codes to create the plot. The script contains the calculation of RMSE and the codes to reproduce Supplementary Figure 1.
 
-The `Picard1-U1464-WindowSize.R` file contains codes to create Figure 5 and Supplementary Figures 1 & 2. Figure 5 is created using window size = 2000. Supplementary Figures 1 & 2 are created with window sizes - 500 & 1000. Standard `Asymmetric P1` step pattern is used to perform DTW and the codes to plot individual figures are provided in the same file.
+Figure 7 can be reproduced using the `U1464_U1482_DTW.R` file. This file contains the DTW calculations using 5 different step patterns and 3 windowing functions, followed by the codes to create the plot. The script contains the calculation of RMSE and the codes to reproduce Supplementary Figure 3.
 
-To reproduce Supplementary Figures 3 to 6, use files `Picard1-Finucane1-Preliminary.R`, `Picard1-Angel2-Preliminary.R`, `Picard1-Goodwyn2-Preliminary.R`, and `Picard1-Goodwyn6-Preliminary.R`. DTW calculation and corresponding plot are available in the same R scripts.
-
-To reproduce Figures 8 to 11, run the `Custom_Step_Pattern.R` file first. To plot Figure 8, first use the `Picard1-Angel2-DTW.R` file to compute DTW with the standard step pattern and then with the customized 'Stratigraphy-optimized' step pattern and 'Knowledge-based' windowing function. Individual plots can be created using the codes within the same file. To reproduce Figure 8, use `Picard1-Angel2-Plot.R`.
+To reproduce Figures 8 to 11, run the `Custom_Step_Pattern.R` file first. To plot Figure 8, first use the `Picard1-Angel2-DTW.R` file to compute DTW with the standard step pattern and then with the customized 'Stratigraphy-optimized' step pattern and 'Knowledge-based' windowing function. Individual plots can be created using the codes within the same file. Before running the density plot, run the `CompareWindowBorders` to create the customized window borders. To reproduce Figure 8, use `Picard1-Angel2-Plot.R`.
 
 Follow the same procedure for Angel-2 and Minilya-1 sites.
 
 To create Figure 11, run the `Picard1-Angel2-Minilya1-Whitetail1-Plot.R` file to create the plot.
 
-To create Figure 3 of the standard and knowledge-based window, make sure to run the entire script of `Picard1-Minilya1-DTW.R` file. This performs DTW with customized step pattern and windowing function. Also, run the `CompareWindowBorders` to create the customized window borders. Then, run the `CustomWindow.R` file.
+To create Figure 4 of the standard and knowledge-based window, make sure to run the entire script of `Picard1-Minilya1-DTW.R` file. This performs DTW with customized step pattern and windowing function. Also, run the `CompareWindowBorders` to create the customized window borders. Then, run the `CustomWindow.R` file.
 
 ## License
 
@@ -44,3 +42,6 @@ This work is licensed under a
 
 - Signorell A (2024). _DescTools: Tools for Descriptive Statistics_. R package
   version 0.99.54, <https://CRAN.R-project.org/package=DescTools>.
+
+- Hagen, C., Creveling, J., & Huybers, P. (2024). Align: A User-Friendly App for Numerical Stratigraphic Correlation. GSA Today, 34(2).
+  https://doi.org/10.1130/GSATG575A.1
