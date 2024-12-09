@@ -43,5 +43,4 @@ This work is licensed under a
 - Signorell A (2024). _DescTools: Tools for Descriptive Statistics_. R package
   version 0.99.54, <https://CRAN.R-project.org/package=DescTools>.
 
-- Hagen, C., Creveling, J., & Huybers, P. (2024). Align: A User-Friendly App for Numerical Stratigraphic Correlation. GSA Today, 34(2).
-  https://doi.org/10.1130/GSATG575A.1
+- Hagen, C., Creveling, J., & Huybers, P. (2024). Align: A User-Friendly App for Numerical Stratigraphic Correlation. GSA Today, 34(2). https://doi.org/10.1130/GSATG575A.1
