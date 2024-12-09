@@ -9,10 +9,7 @@ library(astrochron)
 
 # Import U1464 and U1482 datasets
 
-U1464 <- read.csv("C:/users/Rohit/OneDrive - Universität Münster/IODP NGR Data/U1464-HSGR.csv", header=TRUE, stringsAsFactors=FALSE)
-
-# Biostratigraphic Data
-U1464_U1482_depth <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/U1464-U1482_Depth.csv", header=TRUE, stringsAsFactors=FALSE)
+U1464 <- read.csv("data/U1464-HSGR.csv", header=TRUE, stringsAsFactors=FALSE)
 
 # Recorrecting attenuated signal
 M1 = Gmean(U1464[c(1:551),2])
@@ -25,10 +22,12 @@ U1464_1 = U1464[c(1:2953),]
 head(U1464_1)
 plot(U1464_1, type="l", xlim = c(0, 500), ylim = c(0, 60))
 
-U1482 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/IODP NGR Data/U1482.csv", header=TRUE, stringsAsFactors=FALSE)
+U1482 <- read.csv("data/U1482.csv", header=TRUE, stringsAsFactors=FALSE)
 head(U1482)
 plot(U1482, type="l", xlim = c(0, 550), ylim = c(0, 40))
 
+# Biostratigraphic Data
+U1464_U1482_depth <- read.csv("data/U1464-U1482_Depth.csv", header=TRUE, stringsAsFactors=FALSE)
 
 #### Rescaling and resampling of the data ####
 
@@ -360,7 +359,7 @@ print(rmse_values1)
 # Make Figure
 ###########################
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Figures/")
+setwd("Figures/")
 
 pdf(file = "Figure 13.pdf", width = 8.5, height = 11, paper = "a4")
 
@@ -415,7 +414,7 @@ dev.off()
 # Make Supplementary Figure
 ###########################
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Figures/")
+setwd("Figures/")
 
 png(filename = "Figure 15.png", width = 6000, height = 8000, res = 600)
 
