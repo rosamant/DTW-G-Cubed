@@ -53,7 +53,7 @@ lines(A4_U1464_Picard1, col = "red")
 # Make Figure for Picard-1 U1464 correlation
 ###########################
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Supplementary Figures/")
+setwd("Supplementary Figures/")
 
 pdf(file = "Figure 8.pdf", width = 8.5, height = 11, paper = "a4")
 
@@ -131,7 +131,7 @@ lines(A4_U1482_U1464_1, col = "red")
 # Make Figure for U1464 U1482 correlation
 ###########################
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Supplementary Figures/")
+setwd("Supplementary Figures/")
 
 pdf(file = "Figure 10.pdf", width = 8.5, height = 11, paper = "a4")
 
@@ -208,7 +208,7 @@ lines(A4_Angel2_Picard1, col = "red")
 # Make Figure for Picard-1 Angel-2 correlation
 ###########################
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Supplementary Figures/")
+setwd("Supplementary Figures/")
 
 pdf(file = "Figure 11.pdf", width = 8.5, height = 11, paper = "a4")
 
@@ -286,7 +286,7 @@ lines(A4_Minilya1_Picard1, col = "red")
 # Make Figure for Picard-1 Minilya-1 correlation
 ###########################
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Supplementary Figures/")
+setwd("Supplementary Figures/")
 
 pdf(file = "Figure 12.pdf", width = 8.5, height = 11, paper = "a4")
 
@@ -364,7 +364,7 @@ lines(A4_Whitetail1_Picard1, col = "red")
 # Make Figure for Picard-1 Whitetail-1 correlation
 ###########################
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Supplementary Figures/")
+setwd("Supplementary Figures/")
 
 pdf(file = "Figure 13.pdf", width = 8.5, height = 11, paper = "a4")
 
