@@ -1,5 +1,5 @@
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Figures/")
+setwd("Figures/")
 
 pdf(file = "Figure 10.pdf", width = 8.5, height = 11, paper = "a4")
 
