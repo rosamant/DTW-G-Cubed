@@ -3,7 +3,7 @@
 
 dev.off()
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Figures/Figure 3/")
+setwd("Figure 3/")
 
 png(filename = "CustomDensityWindow.png", width = 6000, height = 8000, res = 600)
 
