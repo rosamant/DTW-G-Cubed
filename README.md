@@ -4,7 +4,7 @@
 
 Natural Gamma Radiation data used for this paper is stored in .csv files and is freely available through the National Offshore Petroleum Information Management System (NOPIMS, Geoscience Australia) (https://www.ga.gov.au/nopims).
 
-The repository contains the R scripts for the DTW calculations performed and presented for the G-Cubed paper on the methodology of DTW custom technique. 
+The repository contains the R scripts for the DTW calculations performed and presented for the Paleoceanography and Paleoclimatology paper on the methodology of DTW custom technique. 
 
 Figure 4 can be reproduced using the `Picard1-U1464-StepPatterns.R` file. This file contains the DTW calculations using 4 different step patterns, followed by the codes to create the plot.
 
