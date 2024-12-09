@@ -6,12 +6,12 @@ library(astrochron)
 
 # Import Picard1 and Angel2 datasets
 
-Picard1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Picard 1/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
+Picard1 <- read.csv("data/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
 Picard1=Picard1[c(83:7750),] # Eocene-Miocene Unconformity
 head(Picard1)
 plot(Picard1, type="l", xlim = c(150, 1300), ylim = c(0, 50))
 
-Angel2 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Angel 2/Angel2.csv", header=TRUE, stringsAsFactors=FALSE)
+Angel2 <- read.csv("data/Angel2.csv", header=TRUE, stringsAsFactors=FALSE)
 Angel2=Angel2[c(1:8419),] # Oligocene-Miocene
 head(Angel2)
 plot(Angel2, type="l", xlim = c(100, 1400), ylim = c(0, 50))
