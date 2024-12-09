@@ -6,15 +6,15 @@ library(astrochron)
 
 # Import Picard1 and U1464 datasets
 
-Picard1 <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/NOPIMS Data/NW_Australia_Digitized_Data/Carnarvon Basin/Picard 1/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
+Picard1 <- read.csv("data/PICARD 1.csv", header=TRUE, stringsAsFactors=FALSE)
 Picard1=Picard1[c(83:7750),] # Eocene-Miocene Unconformity
 head(Picard1)
 plot(Picard1, type="l", xlim = c(150, 1300), ylim = c(0, 50))
 
-U1464 <- read.csv("C:/users/Rohit/OneDrive - Universität Münster/IODP NGR Data/U1464-HSGR.csv", header=TRUE, stringsAsFactors=FALSE)
+U1464 <- read.csv("data/U1464-HSGR.csv", header=TRUE, stringsAsFactors=FALSE)
 
 #Biostratigraphic Data
-U1463_U1464_depth <- read.csv("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/U1463-U1464_Depth.csv", header=TRUE, stringsAsFactors=FALSE)
+U1463_U1464_depth <- read.csv("data/U1463-U1464_Depth.csv", header=TRUE, stringsAsFactors=FALSE)
 
 # Recorrecting attenuated signal
 M1 = Gmean(U1464[c(1:551),2])
@@ -356,7 +356,7 @@ print(rmse_values)
 # Make Figure
 ###########################
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Figures/")
+setwd("Figures/")
 
 pdf(file = "Figure 12.pdf", width = 8.5, height = 11, paper = "a4")
 
@@ -411,7 +411,7 @@ dev.off()
 # Make Supplementary Figure
 ###########################
 
-setwd("C:/Users/Rohit/OneDrive - Universität Münster/Paper Drafts/P&P/Figures/")
+setwd("Figures/")
 
 png(filename = "Figure 14.png", width = 6000, height = 8000, res = 600)
 
