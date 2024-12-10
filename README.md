@@ -18,6 +18,8 @@ To create Figure 11, run the `Picard1-Angel2-Minilya1-Whitetail1-Plot.R` file to
 
 To create Figure 4 of the standard and knowledge-based window, make sure to run the entire script of `Picard1-Minilya1-DTW.R` file. This performs DTW with customized step pattern and windowing function. Also, run the `CompareWindowBorders` to create the customized window borders. Then, run the `CustomWindow.R` file.
 
+The DTW correlation based on the Hagen algorithm 'Align' can be reproduced using the `Hagen_DTW.R` file. Before running this file, preprocess all the NGR data for Picard-1, Angel-2, Minilya-1, and Whitetail-1 sites using their respective DTW files - `Picard1-Angel2-DTW.R`, `Picard1-Minilya1-DTW.R` and `Picard1-Whitetail1-DTW.R`
+
 ## License
 
 Shield: [![CC BY 4.0][cc-by-shield]][cc-by]
