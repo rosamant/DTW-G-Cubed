@@ -1,4 +1,6 @@
 install.packages(setdiff(c("dtw", "DescTools", "astrochron"), rownames(installed.packages())))
+source("src/win.f.R")
+source("src/RMSE_utils.R")
 
 rm(list = ls())
 
@@ -220,9 +222,6 @@ compare.window <- unname(as.matrix(compare.window))
 
 image(x=U1464_1_standardized[,1],y=U1482_standardized[,1],z=t(compare.window),useRaster=TRUE)
 
-# Define a knowledge-based window function for use in DTW
-win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
-
 # Perform dtw with knowledge-based window
 system.time(al_U1482_U1464_ap12 <- dtw::dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_U1482_U1464_ap12, type = "threeway")
@@ -310,27 +309,6 @@ plot(U1464_U1482_Depth_ap12, type = "l")
 ############################
 # Calculate RMSE
 ###########################
-
-find_closest_by_x <- function(obs_x, predicted_data) {
-  diff_x <- abs(predicted_data$U1464_Depth - obs_x)
-  
-  closest_index <- which.min(diff_x)
-  
-  return(predicted_data[closest_index, "U1482_Depth"])
-}
-
-calculate_rmse_for_line <- function(predicted_data, observed_data) {
-  predicted_depths <- vector("numeric", nrow(observed_data))
-  
-  for (i in 1:nrow(observed_data)) {
-    obs_x <- observed_data$U1464_Depth[i]
-    predicted_depths[i] <- find_closest_by_x(obs_x, predicted_data)
-  }
-  
-  observed_depths <- observed_data$U1482_Depth
-  rmse <- sqrt(mean((observed_depths - predicted_depths)^2))
-  return(rmse)
-}
 
 predicted_lines1 <- list(
   U1464_U1482_Depth_ap,

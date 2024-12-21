@@ -1,4 +1,5 @@
 install.packages(setdiff(c("dtw", "DescTools", "astrochron"), rownames(installed.packages())))
+source("src/win.f.R")
 
 # Import packages
 
@@ -137,9 +138,6 @@ compare.window <- sapply(as.data.frame(compare.window), as.logical)
 compare.window <- unname(as.matrix(compare.window))
 
 image(x=Picard1_standardized[,1],y=Minilya1_standardized[,1],z=t(compare.window),useRaster=TRUE)
-
-# Define a knowledge-based window function for use in DTW
-win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
 
 # Perform dtw with knowledge-based window
 system.time(al_m1_p1_ap1 <- dtw::dtw(Minilya1_standardized$Minilya1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
