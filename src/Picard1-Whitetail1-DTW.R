@@ -29,17 +29,17 @@ plot(Whitetail1, type="l", xlim = c(1000, 1900), ylim = c(0, 50))
 #### Rescaling and resampling of the data ####
 
 # Linear interpolation of datasets
-Picard1_interpolated <- linterp(Picard1, dt = 0.2, genplot = F)
-Whitetail1_interpolated <- linterp(Whitetail1, dt = 0.2, genplot = F)
+Picard1_interpolated <- astrochron::linterp(Picard1, dt = 0.2, genplot = F)
+Whitetail1_interpolated <- astrochron::linterp(Whitetail1, dt = 0.2, genplot = F)
 
 # Scaling the data
-Pmean = Gmean(Picard1_interpolated$GR)
-Pstd = Gsd(Picard1_interpolated$GR)
+Pmean = DescTools::Gmean(Picard1_interpolated$GR)
+Pstd = DescTools::Gsd(Picard1_interpolated$GR)
 Picard1_scaled = (Picard1_interpolated$GR - Pmean)/Pstd
 Picard1_rescaled = data.frame(Picard1_interpolated$DEPT, Picard1_scaled)
 
-Wmean = Gmean(Whitetail1_interpolated$GR)
-Wstd = Gsd(Whitetail1_interpolated$GR)
+Wmean = DescTools::Gmean(Whitetail1_interpolated$GR)
+Wstd = DescTools::Gsd(Whitetail1_interpolated$GR)
 Whitetail1_scaled = (Whitetail1_interpolated$GR - Wmean)/Wstd
 Whitetail1_rescaled = data.frame(Whitetail1_interpolated$DEPT, Whitetail1_scaled)
 
@@ -61,7 +61,7 @@ system.time(al_w1_p1_p1 <- dtw(Whitetail1_standardized$Whitetail1_scaled.Average
 plot(al_w1_p1_p1, "threeway")
 
 # Tuning the standardized data on reference depth scale
-Whitetail1_on_Picard1_depth = tune(Whitetail1_standardized, cbind(Whitetail1_standardized$Whitetail1_scaled.Center_win[al_w1_p1_p1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_w1_p1_p1$index2s]), extrapolate = T)
+Whitetail1_on_Picard1_depth = astrochron::tune(Whitetail1_standardized, cbind(Whitetail1_standardized$Whitetail1_scaled.Center_win[al_w1_p1_p1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_w1_p1_p1$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -89,24 +89,24 @@ image(x=Picard1_standardized[,1],y=Whitetail1_standardized[,1],z=t(compare.windo
 # Assigning stratigraphic depth locations for reference and query sites
 
 # Depth values for first datum
-base_1_x <- Closest(260, Picard1_standardized[,1],which=TRUE)
-base_1_y <- Closest(1100, Whitetail1_standardized[,1],which=TRUE)
+base_1_x <- DescTools::Closest(260, Picard1_standardized[,1],which=TRUE)
+base_1_y <- DescTools::Closest(1100, Whitetail1_standardized[,1],which=TRUE)
 
 # Depth values for second datum
-base_2_x <- Closest(370, Picard1_standardized[,1],which=TRUE)
-base_2_y <- Closest(1190, Whitetail1_standardized[,1],which=TRUE)
+base_2_x <- DescTools::Closest(370, Picard1_standardized[,1],which=TRUE)
+base_2_y <- DescTools::Closest(1190, Whitetail1_standardized[,1],which=TRUE)
 
 # Depth values for third datum
-base_3_x <- Closest(430, Picard1_standardized[,1],which=TRUE)
-base_3_y <- Closest(1230, Whitetail1_standardized[,1],which=TRUE)
+base_3_x <- DescTools::Closest(430, Picard1_standardized[,1],which=TRUE)
+base_3_y <- DescTools::Closest(1230, Whitetail1_standardized[,1],which=TRUE)
 
 # Depth values for fourth datum
-base_4_x <- Closest(545, Picard1_standardized[,1],which=TRUE)
-base_4_y <- Closest(1350, Whitetail1_standardized[,1],which=TRUE)
+base_4_x <- DescTools::Closest(545, Picard1_standardized[,1],which=TRUE)
+base_4_y <- DescTools::Closest(1350, Whitetail1_standardized[,1],which=TRUE)
 
 # Depth values for fifth datum
-base_5_x <- Closest(1010, Picard1_standardized[,1],which=TRUE)
-base_5_y <- Closest(1750, Whitetail1_standardized[,1],which=TRUE)
+base_5_x <- DescTools::Closest(1010, Picard1_standardized[,1],which=TRUE)
+base_5_y <- DescTools::Closest(1750, Whitetail1_standardized[,1],which=TRUE)
 
 # Assigning depth uncertainty "slack" to the tie-points
 
@@ -143,7 +143,7 @@ image(x=Picard1_standardized[,1],y=Whitetail1_standardized[,1],z=t(compare.windo
 win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
 
 # Perform dtw with knowledge-based window
-system.time(al_w1_p1_ap1 <- dtw(Whitetail1_standardized$Whitetail1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
+system.time(al_w1_p1_ap1 <- dtw::dtw(Whitetail1_standardized$Whitetail1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_w1_p1_ap1, type = "threeway")
 
 # DTW Distance measure
@@ -163,7 +163,7 @@ image(y = Picard1_standardized[,1], x = Whitetail1_standardized[,1], z = compare
 lines(Whitetail1_standardized$Whitetail1_scaled.Center_win[al_w1_p1_ap1$index1], Picard1_standardized$Picard1_scaled.Center_win[al_w1_p1_ap1$index2], col = "white", lwd = 2)
 
 # Tuning the standardized data on reference depth scale
-Whitetail1_on_Picard1_depth_cw = tune(Whitetail1_standardized, cbind(Whitetail1_standardized$Whitetail1_scaled.Center_win[al_w1_p1_ap1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_w1_p1_ap1$index2s]), extrapolate = F)
+Whitetail1_on_Picard1_depth_cw = astrochron::tune(Whitetail1_standardized, cbind(Whitetail1_standardized$Whitetail1_scaled.Center_win[al_w1_p1_ap1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_w1_p1_ap1$index2s]), extrapolate = F)
 
 dev.off()
 

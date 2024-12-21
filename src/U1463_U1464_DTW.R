@@ -31,17 +31,17 @@ plot(U1464, type="l", xlim = c(0, 800), ylim = c(0, 60))
 #### Rescaling and resampling of the data ####
 
 # Linear interpolation of datasets
-Picard1_interpolated <- linterp(Picard1, dt = 0.2, genplot = F)
-U1464_interpolated <- linterp(U1464, dt = 0.2, genplot = F)
+Picard1_interpolated <- astrochron::linterp(Picard1, dt = 0.2, genplot = F)
+U1464_interpolated <- astrochron::linterp(U1464, dt = 0.2, genplot = F)
 
 # Scaling the data
-Pmean = Gmean(Picard1_interpolated$GR)
-Pstd = Gsd(Picard1_interpolated$GR)
+Pmean = DescTools::Gmean(Picard1_interpolated$GR)
+Pstd = DescTools::Gsd(Picard1_interpolated$GR)
 Picard1_scaled = (Picard1_interpolated$GR - Pmean)/Pstd
 Picard1_rescaled = data.frame(Picard1_interpolated$DEPT, Picard1_scaled)
 
-Umean = Gmean(U1464_interpolated$HSGR)
-Ustd = Gsd(U1464_interpolated$HSGR)
+Umean = DescTools::Gmean(U1464_interpolated$HSGR)
+Ustd = DescTools::Gsd(U1464_interpolated$HSGR)
 U1464_scaled = (U1464_interpolated$HSGR - Umean)/Ustd
 U1464_rescaled = data.frame(U1464_interpolated$DEPTH_WMSF, U1464_scaled)
 
@@ -63,7 +63,7 @@ system.time(al_U1464_p1_ap <- dtw(U1464_standardized$U1464_scaled.Average, Picar
 plot(al_U1464_p1_ap, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1464_on_Picard1_depth_ap = tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap$index2s]), extrapolate = T)
+U1464_on_Picard1_depth_ap = astrochron::tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -79,7 +79,7 @@ system.time(al_U1464_p1_ap05 <- dtw(U1464_standardized$U1464_scaled.Average, Pic
 plot(al_U1464_p1_ap05, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1464_on_Picard1_depth_ap05 = tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap05$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap05$index2s]), extrapolate = T)
+U1464_on_Picard1_depth_ap05 = astrochron::tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap05$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap05$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -91,11 +91,11 @@ lines(U1464_on_Picard1_depth_ap05, col = "red")
 #### DTW with step pattern asymmetricP1 but no window ####
 
 # Perform dtw
-system.time(al_U1464_p1_ap1 <- dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
+system.time(al_U1464_p1_ap1 <- dtw::dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
 plot(al_U1464_p1_ap1, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1464_on_Picard1_depth_ap1 = tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap1$index2s]), extrapolate = T)
+U1464_on_Picard1_depth_ap1 = astrochron::tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap1$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -107,11 +107,11 @@ lines(U1464_on_Picard1_depth_ap1, col = "red")
 #### DTW with step pattern asymmetricP2 but no window ####
 
 # Perform dtw
-system.time(al_U1464_p1_ap2 <- dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP2, open.begin = F, open.end = T))
+system.time(al_U1464_p1_ap2 <- dtw::dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP2, open.begin = F, open.end = T))
 plot(al_U1464_p1_ap2, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1464_on_Picard1_depth_ap2 = tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap2$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap2$index2s]), extrapolate = T)
+U1464_on_Picard1_depth_ap2 = astrochron::tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap2$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap2$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -123,11 +123,11 @@ lines(U1464_on_Picard1_depth_ap2, col = "red")
 #### DTW with step pattern asymmetricP1 but Sakoe Chiba window ####
 
 # Perform dtw
-system.time(al_U1464_p1_ap3 <- dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, window.type = "sakoechiba", window.size = 2000, open.begin = F, open.end = T))
+system.time(al_U1464_p1_ap3 <- dtw::dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, window.type = "sakoechiba", window.size = 2000, open.begin = F, open.end = T))
 plot(al_U1464_p1_ap3, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1464_on_Picard1_depth_ap3 = tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap1$index2s]), extrapolate = T)
+U1464_on_Picard1_depth_ap3 = astrochron::tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap1$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -139,11 +139,11 @@ lines(U1464_on_Picard1_depth_ap3, col = "red")
 #### DTW with stratigraphy-optimized step pattern asymmetricP1.1 but no knowledge-based window ####
 
 # Perform dtw
-system.time(al_U1464_p1_ap11 <- dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, open.begin = F, open.end = T))
+system.time(al_U1464_p1_ap11 <- dtw::dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, open.begin = F, open.end = T))
 plot(al_U1464_p1_ap11, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1464_on_Picard1_depth_ap11 = tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap11$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap11$index2s]), extrapolate = T)
+U1464_on_Picard1_depth_ap11 = astrochron::tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap11$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap11$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -167,24 +167,24 @@ image(x=Picard1_standardized[,1],y=U1464_standardized[,1],z=t(compare.window),us
 # Assigning stratigraphic depth locations for reference and query sites
 
 # Depth values for first datum
-base_1_x <- Closest(190, Picard1_standardized[,1],which=TRUE)
-base_1_y <- Closest(50, U1464_standardized[,1],which=TRUE)
+base_1_x <- DescTools::Closest(190, Picard1_standardized[,1],which=TRUE)
+base_1_y <- DescTools::Closest(50, U1464_standardized[,1],which=TRUE)
 
 # Depth values for second datum
-base_2_x <- Closest(270, Picard1_standardized[,1],which=TRUE)
-base_2_y <- Closest(120, U1464_standardized[,1],which=TRUE)
+base_2_x <- DescTools::Closest(270, Picard1_standardized[,1],which=TRUE)
+base_2_y <- DescTools::Closest(120, U1464_standardized[,1],which=TRUE)
 
 # Depth values for third datum
-base_3_x <- Closest(310, Picard1_standardized[,1],which=TRUE)
-base_3_y <- Closest(184, U1464_standardized[,1],which=TRUE)
+base_3_x <- DescTools::Closest(310, Picard1_standardized[,1],which=TRUE)
+base_3_y <- DescTools::Closest(184, U1464_standardized[,1],which=TRUE)
 
 # Depth values for fourth datum
-base_4_x <- Closest(390, Picard1_standardized[,1],which=TRUE)
-base_4_y <- Closest(275, U1464_standardized[,1],which=TRUE)
+base_4_x <- DescTools::Closest(390, Picard1_standardized[,1],which=TRUE)
+base_4_y <- DescTools::Closest(275, U1464_standardized[,1],which=TRUE)
 
 # Depth values for fifth datum
-base_5_x <- Closest(1010, Picard1_standardized[,1],which=TRUE)
-base_5_y <- Closest(700, U1464_standardized[,1],which=TRUE)
+base_5_x <- DescTools::Closest(1010, Picard1_standardized[,1],which=TRUE)
+base_5_y <- DescTools::Closest(700, U1464_standardized[,1],which=TRUE)
 
 # Assigning depth uncertainty "slack" to the tie-points
 
@@ -221,7 +221,7 @@ image(x=Picard1_standardized[,1],y=U1464_standardized[,1],z=t(compare.window),us
 win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
 
 # Perform dtw with knowledge-based window
-system.time(al_U1464_p1_ap12 <- dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
+system.time(al_U1464_p1_ap12 <- dtw::dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_U1464_p1_ap12, type = "threeway")
 
 # DTW Distance measure
@@ -234,7 +234,7 @@ image(y = Picard1_standardized[,1], x = U1464_standardized[,1], z = compare.wind
 lines(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap12$index1], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap12$index2], col = "white", lwd = 2)
 
 # Tuning the standardized data on reference depth scale
-U1464_on_Picard1_depth_ap12 = tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap12$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap12$index2s]), extrapolate = F)
+U1464_on_Picard1_depth_ap12 = astrochron::tune(U1464_standardized, cbind(U1464_standardized$U1464_scaled.Center_win[al_U1464_p1_ap12$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_U1464_p1_ap12$index2s]), extrapolate = F)
 
 dev.off()
 

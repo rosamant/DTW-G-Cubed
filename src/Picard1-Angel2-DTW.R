@@ -21,17 +21,17 @@ plot(Angel2, type="l", xlim = c(100, 1400), ylim = c(0, 50))
 #### Rescaling and resampling of the data ####
 
 # Linear interpolation of datasets
-Picard1_interpolated <- linterp(Picard1, dt = 0.2, genplot = F)
-Angel2_interpolated <- linterp(Angel2, dt = 0.2, genplot = F)
+Picard1_interpolated <- astrochron::linterp(Picard1, dt = 0.2, genplot = F)
+Angel2_interpolated <- astrochron::linterp(Angel2, dt = 0.2, genplot = F)
 
 # Scaling the data
-Pmean = Gmean(Picard1_interpolated$GR)
-Pstd = Gsd(Picard1_interpolated$GR)
+Pmean = DescTools::Gmean(Picard1_interpolated$GR)
+Pstd = DescTools::Gsd(Picard1_interpolated$GR)
 Picard1_scaled = (Picard1_interpolated$GR - Pmean)/Pstd
 Picard1_rescaled = data.frame(Picard1_interpolated$DEPT, Picard1_scaled)
 
-Amean = Gmean(Angel2_interpolated$GR)
-Astd = Gsd(Angel2_interpolated$GR)
+Amean = DescTools::Gmean(Angel2_interpolated$GR)
+Astd = DescTools::Gsd(Angel2_interpolated$GR)
 Angel2_scaled = (Angel2_interpolated$GR - Amean)/Astd
 Angel2_rescaled = data.frame(Angel2_interpolated$DEPT, Angel2_scaled)
 
@@ -49,11 +49,11 @@ plot(Angel2_standardized, type="l", xlim = c(100, 1400), ylim = c(-20, 20), xlab
 #### DTW with step pattern asymmetricP1 and no knowledge-based step pattern or window  ####
 
 # Perform dtw
-system.time(al_a1_p1_p1 <- dtw(Angel2_standardized$Angel2_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
+system.time(al_a1_p1_p1 <- dtw::dtw(Angel2_standardized$Angel2_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
 plot(al_a1_p1_p1, "threeway")
 
 # Tuning the standardized data on reference depth scale
-Angel2_on_Picard1_depth = tune(Angel2_standardized, cbind(Angel2_standardized$Angel2_scaled.Center_win[al_a1_p1_p1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_a1_p1_p1$index2s]), extrapolate = F)
+Angel2_on_Picard1_depth = astrochron::tune(Angel2_standardized, cbind(Angel2_standardized$Angel2_scaled.Center_win[al_a1_p1_p1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_a1_p1_p1$index2s]), extrapolate = F)
 
 dev.off()
 
@@ -80,24 +80,24 @@ image(x=Picard1_standardized[,1],y=Angel2_standardized[,1],z=t(compare.window),u
 # Assigning stratigraphic depth locations for reference and query sites
 
 # Depth values for first datum
-base_1_x <- Closest(260, Picard1_standardized[,1],which=TRUE)
-base_1_y <- Closest(225, Angel2_standardized[,1],which=TRUE)
+base_1_x <- DescTools::Closest(260, Picard1_standardized[,1],which=TRUE)
+base_1_y <- DescTools::Closest(225, Angel2_standardized[,1],which=TRUE)
 
 # Depth values for second datum
-base_2_x <- Closest(370, Picard1_standardized[,1],which=TRUE)
-base_2_y <- Closest(350, Angel2_standardized[,1],which=TRUE)
+base_2_x <- DescTools::Closest(370, Picard1_standardized[,1],which=TRUE)
+base_2_y <- DescTools::Closest(350, Angel2_standardized[,1],which=TRUE)
 
 # Depth values for third datum
-base_3_x <- Closest(430, Picard1_standardized[,1],which=TRUE)
-base_3_y <- Closest(430, Angel2_standardized[,1],which=TRUE)
+base_3_x <- DescTools::Closest(430, Picard1_standardized[,1],which=TRUE)
+base_3_y <- DescTools::Closest(430, Angel2_standardized[,1],which=TRUE)
 
 # Depth values for fourth datum
-base_4_x <- Closest(545, Picard1_standardized[,1],which=TRUE)
-base_4_y <- Closest(630, Angel2_standardized[,1],which=TRUE)
+base_4_x <- DescTools::Closest(545, Picard1_standardized[,1],which=TRUE)
+base_4_y <- DescTools::Closest(630, Angel2_standardized[,1],which=TRUE)
 
 # Depth values for fifth datum
-base_5_x <- Closest(1010, Picard1_standardized[,1],which=TRUE)
-base_5_y <- Closest(975, Angel2_standardized[,1],which=TRUE)
+base_5_x <- DescTools::Closest(1010, Picard1_standardized[,1],which=TRUE)
+base_5_y <- DescTools::Closest(975, Angel2_standardized[,1],which=TRUE)
 
 # Assigning depth uncertainty "slack" to the tie-points
 
@@ -134,7 +134,7 @@ image(x=Picard1_standardized[,1],y=Angel2_standardized[,1],z=t(compare.window),u
 win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
 
 # Perform dtw with knowledge-based window
-system.time(al_a1_p1_ap1 <- dtw(Angel2_standardized$Angel2_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
+system.time(al_a1_p1_ap1 <- dtw::dtw(Angel2_standardized$Angel2_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_a1_p1_ap1, type = "threeway")
 
 # DTW Distance measure

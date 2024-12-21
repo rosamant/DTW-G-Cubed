@@ -1,3 +1,5 @@
+# Load the datasets
+source("src/Picard1-Angel2-DTW.R")
 
 setwd("Figures/")
 
