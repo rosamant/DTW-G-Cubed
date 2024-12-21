@@ -1,3 +1,6 @@
+install.packages(setdiff(c("dtw", "DescTools", "astrochron"), rownames(installed.packages())))
+source("src/win.f.R")
+source("src/RMSE_utils.R")
 
 rm(list = ls())
 
@@ -33,25 +36,25 @@ U1464_U1482_depth <- read.csv("data/U1464-U1482_Depth.csv", header=TRUE, strings
 
 # Linear interpolation of datasets
 
-U1464_1_interpolated <- linterp(U1464_1, dt = 0.2, genplot = F)
-U1482_interpolated <- linterp(U1482, dt = 0.2, genplot = F)
+U1464_1_interpolated <- astrochron::linterp(U1464_1, dt = 0.2, genplot = F)
+U1482_interpolated <- astrochron::linterp(U1482, dt = 0.2, genplot = F)
 
 # Scaling the data
-Smean = Gmean(U1464_1_interpolated$HSGR)
-Sstd = Gsd(U1464_1_interpolated$HSGR)
+Smean = DescTools::Gmean(U1464_1_interpolated$HSGR)
+Sstd = DescTools::Gsd(U1464_1_interpolated$HSGR)
 U1464_1_scaled = (U1464_1_interpolated$HSGR - Smean)/Sstd
 U1464_1_rescaled = data.frame(U1464_1_interpolated$DEPTH_WMSF, U1464_1_scaled)
 
-Umean = Gmean(U1482_interpolated$GR)
-Ustd = Gsd(U1482_interpolated$GR)
+Umean = DescTools::Gmean(U1482_interpolated$GR)
+Ustd = DescTools::Gsd(U1482_interpolated$GR)
 U1482_scaled = (U1482_interpolated$GR - Umean)/Ustd
 U1482_rescaled = data.frame(U1482_interpolated$DEPT, U1482_scaled)
 
 # Resampling the data using moving window statistics
-U1464_1_scaled = mwStats(U1464_1_rescaled, cols = 2, win=3, ends = T)
+U1464_1_scaled = astrochron::wStats(U1464_1_rescaled, cols = 2, win=3, ends = T)
 U1464_1_standardized = data.frame(U1464_1_scaled$Center_win, U1464_1_scaled$Average)
 
-U1482_scaled = mwStats(U1482_rescaled, cols = 2, win=3, ends = T)
+U1482_scaled = astrochron::mwStats(U1482_rescaled, cols = 2, win=3, ends = T)
 U1482_standardized = data.frame(U1482_scaled$Center_win, U1482_scaled$Average)
 
 # Plotting the rescaled and resampled data
@@ -65,7 +68,7 @@ system.time(al_U1482_U1464_ap <- dtw(U1482_standardized$U1482_scaled.Average, U1
 plot(al_U1482_U1464_ap, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1482_on_U1464_depth_ap = tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap$index2s]), extrapolate = T)
+U1482_on_U1464_depth_ap = astrochron::tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -81,7 +84,7 @@ system.time(al_U1482_U1464_ap05 <- dtw(U1482_standardized$U1482_scaled.Average, 
 plot(al_U1482_U1464_ap05, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1482_on_U1464_depth_ap05 = tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap05$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap05$index2s]), extrapolate = T)
+U1482_on_U1464_depth_ap05 = astrochron::tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap05$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap05$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -93,11 +96,11 @@ lines(U1482_on_U1464_depth_ap05, col = "red")
 #### DTW with step pattern asymmetricP1 but no window ####
 
 # Perform dtw
-system.time(al_U1482_U1464_ap1 <- dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
+system.time(al_U1482_U1464_ap1 <- dtw::dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
 plot(al_U1482_U1464_ap1, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1482_on_U1464_depth_ap1 = tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap1$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap1$index2s]), extrapolate = T)
+U1482_on_U1464_depth_ap1 = astrochron::tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap1$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap1$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -109,11 +112,11 @@ lines(U1482_on_U1464_depth_ap1, col = "red")
 #### DTW with step pattern asymmetricP2 but no window ####
 
 # Perform dtw
-system.time(al_U1482_U1464_ap2 <- dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP2, open.begin = F, open.end = T))
+system.time(al_U1482_U1464_ap2 <- dtw::dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP2, open.begin = F, open.end = T))
 plot(al_U1482_U1464_ap2, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1482_on_U1464_depth_ap2 = tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap2$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap2$index2s]), extrapolate = T)
+U1482_on_U1464_depth_ap2 = astrochron::tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap2$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap2$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -125,11 +128,11 @@ lines(U1482_on_U1464_depth_ap2, col = "red")
 #### DTW with step pattern asymmetricP1 but Sakoe Chiba window ####
 
 # Perform dtw
-system.time(al_U1482_U1464_ap3 <- dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, window.type = "sakoechiba", window.size = 2000, open.begin = F, open.end = T))
+system.time(al_U1482_U1464_ap3 <- dtw::dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, window.type = "sakoechiba", window.size = 2000, open.begin = F, open.end = T))
 plot(al_U1482_U1464_ap3, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1482_on_U1464_depth_ap3 = tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap1$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap1$index2s]), extrapolate = T)
+U1482_on_U1464_depth_ap3 = astrochron::tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap1$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap1$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -141,11 +144,11 @@ lines(U1482_on_U1464_depth_ap3, col = "red")
 #### DTW with stratigraphy-optimized step pattern asymmetricP1.1 but no knowledge-based window ####
 
 # Perform dtw
-system.time(al_U1482_U1464_ap11 <- dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, open.begin = F, open.end = T))
+system.time(al_U1482_U1464_ap11 <- dtw::dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, open.begin = F, open.end = T))
 plot(al_U1482_U1464_ap11, "threeway")
 
 # Tuning the standardized data on reference depth scale
-U1482_on_U1464_depth_ap11 = tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap11$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap11$index2s]), extrapolate = T)
+U1482_on_U1464_depth_ap11 = astrochron::tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap11$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap11$index2s]), extrapolate = T)
 
 dev.off()
 
@@ -169,24 +172,24 @@ image(x=U1464_1_standardized[,1],y=U1482_standardized[,1],z=t(compare.window),us
 # Assigning stratigraphic depth locations for reference and query sites
 
 # Depth values for first datum
-base_1_x <- Closest(52, U1464_1_standardized[,1],which=TRUE)
-base_1_y <- Closest(100, U1482_standardized[,1],which=TRUE)
+base_1_x <- DescTools::Closest(52, U1464_1_standardized[,1],which=TRUE)
+base_1_y <- DescTools::Closest(100, U1482_standardized[,1],which=TRUE)
 
 # Depth values for second datum
-base_2_x <- Closest(128, U1464_1_standardized[,1],which=TRUE)
-base_2_y <- Closest(145, U1482_standardized[,1],which=TRUE)
+base_2_x <- DescTools::Closest(128, U1464_1_standardized[,1],which=TRUE)
+base_2_y <- DescTools::Closest(145, U1482_standardized[,1],which=TRUE)
 
 # Depth values for third datum
-base_3_x <- Closest(190, U1464_1_standardized[,1],which=TRUE)
-base_3_y <- Closest(174, U1482_standardized[,1],which=TRUE)
+base_3_x <- DescTools::Closest(190, U1464_1_standardized[,1],which=TRUE)
+base_3_y <- DescTools::Closest(174, U1482_standardized[,1],which=TRUE)
 
 # Depth values for fourth datum
-base_4_x <- Closest(282, U1464_1_standardized[,1],which=TRUE)
-base_4_y <- Closest(236, U1482_standardized[,1],which=TRUE)
+base_4_x <- DescTools::Closest(282, U1464_1_standardized[,1],which=TRUE)
+base_4_y <- DescTools::Closest(236, U1482_standardized[,1],which=TRUE)
 
 # Depth values for fifth datum
-base_5_x <- Closest(313, U1464_1_standardized[,1],which=TRUE)
-base_5_y <- Closest(290, U1482_standardized[,1],which=TRUE)
+base_5_x <- DescTools::Closest(313, U1464_1_standardized[,1],which=TRUE)
+base_5_y <- DescTools::Closest(290, U1482_standardized[,1],which=TRUE)
 
 # Assigning depth uncertainty "slack" to the tie-points
 
@@ -219,11 +222,8 @@ compare.window <- unname(as.matrix(compare.window))
 
 image(x=U1464_1_standardized[,1],y=U1482_standardized[,1],z=t(compare.window),useRaster=TRUE)
 
-# Define a knowledge-based window function for use in DTW
-win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
-
 # Perform dtw with knowledge-based window
-system.time(al_U1482_U1464_ap12 <- dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
+system.time(al_U1482_U1464_ap12 <- dtw::dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_U1482_U1464_ap12, type = "threeway")
 
 # DTW Distance measure
@@ -234,7 +234,7 @@ image(y = U1464_1_standardized[,1], x = U1482_standardized[,1], z = compare.wind
 lines(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap12$index1], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap12$index2], col = "white", lwd = 2)
 
 # Tuning the standardized data on reference depth scale
-U1482_on_U1464_depth_ap12 = tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap12$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap12$index2s]), extrapolate = F)
+U1482_on_U1464_depth_ap12 = astrochron::tune(U1482_standardized, cbind(U1482_standardized$U1482_scaled.Center_win[al_U1482_U1464_ap12$index1s], U1464_1_standardized$U1464_1_scaled.Center_win[al_U1482_U1464_ap12$index2s]), extrapolate = F)
 
 dev.off()
 
@@ -309,27 +309,6 @@ plot(U1464_U1482_Depth_ap12, type = "l")
 ############################
 # Calculate RMSE
 ###########################
-
-find_closest_by_x <- function(obs_x, predicted_data) {
-  diff_x <- abs(predicted_data$U1464_Depth - obs_x)
-  
-  closest_index <- which.min(diff_x)
-  
-  return(predicted_data[closest_index, "U1482_Depth"])
-}
-
-calculate_rmse_for_line <- function(predicted_data, observed_data) {
-  predicted_depths <- vector("numeric", nrow(observed_data))
-  
-  for (i in 1:nrow(observed_data)) {
-    obs_x <- observed_data$U1464_Depth[i]
-    predicted_depths[i] <- find_closest_by_x(obs_x, predicted_data)
-  }
-  
-  observed_depths <- observed_data$U1482_Depth
-  rmse <- sqrt(mean((observed_depths - predicted_depths)^2))
-  return(rmse)
-}
 
 predicted_lines1 <- list(
   U1464_U1482_Depth_ap,
