@@ -1,3 +1,4 @@
+install.packages(setdiff(c("dtw", "DescTools", "astrochron"), rownames(installed.packages())))
 
 rm(list = ls())
 

@@ -1,3 +1,5 @@
+install.packages(setdiff(c("dtw", "DescTools", "astrochron"), rownames(installed.packages())))
+
 # Import packages
 
 library(dtw)

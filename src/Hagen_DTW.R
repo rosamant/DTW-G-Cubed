@@ -1,3 +1,5 @@
+install.packages(setdiff(c("align"), rownames(installed.packages())))
+
 # Import Align library
 
 library(align)
