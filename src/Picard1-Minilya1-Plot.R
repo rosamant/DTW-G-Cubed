@@ -1,3 +1,5 @@
+# Load the datasets
+source("src/Picard1-Minilya1-DTW.R")
 
 setwd("Figures/")
 

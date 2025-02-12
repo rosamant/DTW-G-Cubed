@@ -1,3 +1,10 @@
+install.packages(setdiff(c("align"), rownames(installed.packages())))
+source("src/Picard1-Angel2-DTW.R")
+source("src/Picard1-Minilya1-DTW.R")
+source("src/Picard1-Whitetail1-DTW.R")
+source("src/U1463_U1464_DTW.R")
+source("src/U1464_U1482_DTW.R")
+
 # Import Align library
 
 library(align)
@@ -27,23 +34,23 @@ write.csv(A_U1482_standardized, file = "C:/Users/Rohit/Desktop/align/A_U1482_sta
 
 # Perform DTW between Picard-1 and U1464 for different g and edge paramters
 
-system.time(A1_U1464_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_U1464_standardized, g = 0.99, edge = 0.15))
+system.time(A1_U1464_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_U1464_standardized, g = 0.99, edge = 0.15))
 A1_U1464_Picard1 = data.frame(A1_U1464_Picard1_dtw[[2]], A1_U1464_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A1_U1464_Picard1, col = "red")
 
-system.time(A2_U1464_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_U1464_standardized, g = 1.0, edge = 0.15))
+system.time(A2_U1464_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_U1464_standardized, g = 1.0, edge = 0.15))
 A2_U1464_Picard1 = data.frame(A2_U1464_Picard1_dtw[[2]], A2_U1464_Picard1_dtw[[1]])
 A2_U1464_Picard1 <- A2_U1464_Picard1[order(A2_U1464_Picard1$A2_U1464_Picard1_dtw..2..), ]
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A2_U1464_Picard1, col = "red")
 
-system.time(A3_U1464_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_U1464_standardized, g = 1.05, edge = 0.25))
+system.time(A3_U1464_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_U1464_standardized, g = 1.05, edge = 0.25))
 A3_U1464_Picard1 = data.frame(A3_U1464_Picard1_dtw[[2]], A3_U1464_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A3_U1464_Picard1, col = "red")
 
-system.time(A4_U1464_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_U1464_standardized, g = 1.15, edge = 0.2))
+system.time(A4_U1464_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_U1464_standardized, g = 1.15, edge = 0.2))
 A4_U1464_Picard1 = data.frame(A4_U1464_Picard1_dtw[[2]], A4_U1464_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A4_U1464_Picard1, col = "red")
@@ -182,23 +189,23 @@ dev.off()
 
 # Perform DTW between Picard-1 and Angel-2 for different g and edge paramters
 
-system.time(A1_Angel2_U1464_1_dtw <- dtw_r(A_Picard1_standardized, A_Angel2_standardized, g = 0.99, edge = 0.15))
+system.time(A1_Angel2_U1464_1_dtw <- align::dtw_r(A_Picard1_standardized, A_Angel2_standardized, g = 0.99, edge = 0.15))
 A1_Angel2_Picard1 = data.frame(A1_Angel2_Picard1_dtw[[2]], A1_Angel2_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A1_Angel2_Picard1, col = "red")
 
-system.time(A2_Angel2_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Angel2_standardized, g = 1.0, edge = 0.15))
+system.time(A2_Angel2_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Angel2_standardized, g = 1.0, edge = 0.15))
 A2_Angel2_Picard1 = data.frame(A2_Angel2_Picard1_dtw[[2]], A2_Angel2_Picard1_dtw[[1]])
 A2_Angel2_Picard1 <- A2_Angel2_Picard1[order(A2_Angel2_Picard1$A2_Angel2_Picard1_dtw..2..), ]
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A2_Angel2_Picard1, col = "red")
 
-system.time(A3_Angel2_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Angel2_standardized, g = 1.05, edge = 0.25))
+system.time(A3_Angel2_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Angel2_standardized, g = 1.05, edge = 0.25))
 A3_Angel2_Picard1 = data.frame(A3_Angel2_Picard1_dtw[[2]], A3_Angel2_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A3_Angel2_Picard1, col = "red")
 
-system.time(A4_Angel2_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Angel2_standardized, g = 1.15, edge = 0.2))
+system.time(A4_Angel2_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Angel2_standardized, g = 1.15, edge = 0.2))
 A4_Angel2_Picard1 = data.frame(A4_Angel2_Picard1_dtw[[2]], A4_Angel2_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A4_Angel2_Picard1, col = "red")
@@ -260,23 +267,23 @@ dev.off()
 
 # Perform DTW between Picard-1 and Minilya-1 for different g and edge paramters
 
-system.time(A1_Minilya1_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Minilya1_standardized, g = 0.99, edge = 0.15))
+system.time(A1_Minilya1_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Minilya1_standardized, g = 0.99, edge = 0.15))
 A1_Minilya1_Picard1 = data.frame(A1_Minilya1_Picard1_dtw[[2]], A1_Minilya1_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A1_Minilya1_Picard1, col = "red")
 
-system.time(A2_Minilya1_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Minilya1_standardized, g = 1.0, edge = 0.15))
+system.time(A2_Minilya1_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Minilya1_standardized, g = 1.0, edge = 0.15))
 A2_Minilya1_Picard1 = data.frame(A2_Minilya1_Picard1_dtw[[2]], A2_Minilya1_Picard1_dtw[[1]])
 A2_Minilya1_Picard1 <- A2_Minilya1_Picard1[order(A2_Minilya1_Picard1$A2_Minilya1_Picard1_dtw..2..), ]
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A2_Minilya1_Picard1, col = "red")
 
-system.time(A3_Minilya1_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Minilya1_standardized, g = 1.05, edge = 0.25))
+system.time(A3_Minilya1_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Minilya1_standardized, g = 1.05, edge = 0.25))
 A3_Minilya1_Picard1 = data.frame(A3_Minilya1_Picard1_dtw[[2]], A3_Minilya1_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A3_Minilya1_Picard1, col = "red")
 
-system.time(A4_Minilya1_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Minilya1_standardized, g = 1.15, edge = 0.3))
+system.time(A4_Minilya1_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Minilya1_standardized, g = 1.15, edge = 0.3))
 A4_Minilya1_Picard1 = data.frame(A4_Minilya1_Picard1_dtw[[2]], A4_Minilya1_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A4_Minilya1_Picard1, col = "red")
@@ -338,23 +345,23 @@ dev.off()
 
 # Perform DTW between Picard-1 and Whitetail-1 for different g and edge paramters
 
-system.time(A1_Whitetail1_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Whitetail1_standardized, g = 0.99, edge = 0.15))
+system.time(A1_Whitetail1_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Whitetail1_standardized, g = 0.99, edge = 0.15))
 A1_Whitetail1_Picard1 = data.frame(A1_Whitetail1_Picard1_dtw[[2]], A1_Whitetail1_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A1_Whitetail1_Picard1, col = "red")
 
-system.time(A2_Whitetail1_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Whitetail1_standardized, g = 1.0, edge = 0.15))
+system.time(A2_Whitetail1_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Whitetail1_standardized, g = 1.0, edge = 0.15))
 A2_Whitetail1_Picard1 = data.frame(A2_Whitetail1_Picard1_dtw[[2]], A2_Whitetail1_Picard1_dtw[[1]])
 A2_Whitetail1_Picard1 <- A2_Whitetail1_Picard1[order(A2_Whitetail1_Picard1$A2_Whitetail1_Picard1_dtw..2..), ]
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A2_Whitetail1_Picard1, col = "red")
 
-system.time(A3_Whitetail1_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Whitetail1_standardized, g = 1.05, edge = 0.25))
+system.time(A3_Whitetail1_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Whitetail1_standardized, g = 1.05, edge = 0.25))
 A3_Whitetail1_Picard1 = data.frame(A3_Whitetail1_Picard1_dtw[[2]], A3_Whitetail1_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A3_Whitetail1_Picard1, col = "red")
 
-system.time(A4_Whitetail1_Picard1_dtw <- dtw_r(A_Picard1_standardized, A_Whitetail1_standardized, g = 1.15, edge = 0.3))
+system.time(A4_Whitetail1_Picard1_dtw <- align::dtw_r(A_Picard1_standardized, A_Whitetail1_standardized, g = 1.15, edge = 0.3))
 A4_Whitetail1_Picard1 = data.frame(A4_Whitetail1_Picard1_dtw[[2]], A4_Whitetail1_Picard1_dtw[[1]])
 plot(A_Picard1_standardized$Picard1_scaled.Center_win, A_Picard1_standardized$Picard1_scaled.Average, type = "l")
 lines(A4_Whitetail1_Picard1, col = "red")

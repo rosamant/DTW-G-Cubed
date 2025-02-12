@@ -1,3 +1,6 @@
+install.packages(setdiff(c("dtw", "DescTools", "astrochron"), rownames(installed.packages())))
+source("src/win.f.R")
+
 # Import packages
 
 library(dtw)
@@ -19,17 +22,17 @@ plot(Minilya1, type="l", xlim = c(150, 1100), ylim = c(0, 50))
 #### Rescaling and resampling of the data ####
 
 # Linear interpolation of datasets
-Picard1_interpolated <- linterp(Picard1, dt = 0.2, genplot = F)
-Minilya1_interpolated <- linterp(Minilya1, dt = 0.2, genplot = F)
+Picard1_interpolated <- astrochron::linterp(Picard1, dt = 0.2, genplot = F)
+Minilya1_interpolated <- astrochron::linterp(Minilya1, dt = 0.2, genplot = F)
 
 # Scaling the data
-Pmean = Gmean(Picard1_interpolated$GR)
-Pstd = Gsd(Picard1_interpolated$GR)
+Pmean = DescTools::Gmean(Picard1_interpolated$GR)
+Pstd = DescTools::Gsd(Picard1_interpolated$GR)
 Picard1_scaled = (Picard1_interpolated$GR - Pmean)/Pstd
 Picard1_rescaled = data.frame(Picard1_interpolated$DEPT, Picard1_scaled)
 
-Mmean = Gmean(Minilya1_interpolated$GR)
-Mstd = Gsd(Minilya1_interpolated$GR)
+Mmean = DescTools::Gmean(Minilya1_interpolated$GR)
+Mstd = DescTools::Gsd(Minilya1_interpolated$GR)
 Minilya1_scaled = (Minilya1_interpolated$GR - Mmean)/Mstd
 Minilya1_rescaled = data.frame(Minilya1_interpolated$DEPT, Minilya1_scaled)
 
@@ -47,11 +50,11 @@ plot(Minilya1_standardized, type="l", xlim = c(150, 1100), ylim = c(-20, 20), xl
 #### DTW with step pattern asymmetricP1 and no knowledge-based step pattern or window ####
 
 # Perform dtw
-system.time(al_m1_p1_p1 <- dtw(Minilya1_standardized$Minilya1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
+system.time(al_m1_p1_p1 <- dtw::dtw(Minilya1_standardized$Minilya1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1, open.begin = F, open.end = T))
 plot(al_m1_p1_p1, "threeway")
 
 # Tuning the standardized data on reference depth scale
-Minilya1_on_Picard1_depth = tune(Minilya1_standardized, cbind(Minilya1_standardized$Minilya1_scaled.Center_win[al_m1_p1_p1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_m1_p1_p1$index2s]), extrapolate = F)
+Minilya1_on_Picard1_depth = astrochron::tune(Minilya1_standardized, cbind(Minilya1_standardized$Minilya1_scaled.Center_win[al_m1_p1_p1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_m1_p1_p1$index2s]), extrapolate = F)
 
 dev.off()
 
@@ -79,28 +82,28 @@ image(x=Picard1_standardized[,1],y=Minilya1_standardized[,1],z=t(compare.window)
 # Assigning stratigraphic depth locations for reference and query sites
 
 # Depth values for first datum
-base_1_x <- Closest(260, Picard1_standardized[,1],which=TRUE)
-base_1_y <- Closest(300, Minilya1_standardized[,1],which=TRUE)
+base_1_x <- DescTools::Closest(260, Picard1_standardized[,1],which=TRUE)
+base_1_y <- DescTools::Closest(300, Minilya1_standardized[,1],which=TRUE)
 
 # Depth values for second datum
-base_2_x <- Closest(370, Picard1_standardized[,1],which=TRUE)
-base_2_y <- Closest(420, Minilya1_standardized[,1],which=TRUE)
+base_2_x <- DescTools::Closest(370, Picard1_standardized[,1],which=TRUE)
+base_2_y <- DescTools::Closest(420, Minilya1_standardized[,1],which=TRUE)
 
 # Depth values for third datum
-base_3_x <- Closest(430, Picard1_standardized[,1],which=TRUE)
-base_3_y <- Closest(510, Minilya1_standardized[,1],which=TRUE)
+base_3_x <- DescTools::Closest(430, Picard1_standardized[,1],which=TRUE)
+base_3_y <- DescTools::Closest(510, Minilya1_standardized[,1],which=TRUE)
 
 # Depth values for fourth datum
-base_4_x <- Closest(545, Picard1_standardized[,1],which=TRUE)
-base_4_y <- Closest(620, Minilya1_standardized[,1],which=TRUE)
+base_4_x <- DescTools::Closest(545, Picard1_standardized[,1],which=TRUE)
+base_4_y <- DescTools::Closest(620, Minilya1_standardized[,1],which=TRUE)
 
 # Depth values for fifth datum
-base_5_x <- Closest(993, Picard1_standardized[,1],which=TRUE)
-base_5_y <- Closest(790, Minilya1_standardized[,1],which=TRUE)
+base_5_x <- DescTools::Closest(993, Picard1_standardized[,1],which=TRUE)
+base_5_y <- DescTools::Closest(790, Minilya1_standardized[,1],which=TRUE)
 
 # Depth values for sixth datum
-base_6_x <- Closest(1190, Picard1_standardized[,1],which=TRUE)
-base_6_y <- Closest(940, Minilya1_standardized[,1],which=TRUE)
+base_6_x <- DescTools::Closest(1190, Picard1_standardized[,1],which=TRUE)
+base_6_y <- DescTools::Closest(940, Minilya1_standardized[,1],which=TRUE)
 
 # Assigning depth uncertainty "slack" to the tie-points
 
@@ -136,11 +139,8 @@ compare.window <- unname(as.matrix(compare.window))
 
 image(x=Picard1_standardized[,1],y=Minilya1_standardized[,1],z=t(compare.window),useRaster=TRUE)
 
-# Define a knowledge-based window function for use in DTW
-win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
-
 # Perform dtw with knowledge-based window
-system.time(al_m1_p1_ap1 <- dtw(Minilya1_standardized$Minilya1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
+system.time(al_m1_p1_ap1 <- dtw::dtw(Minilya1_standardized$Minilya1_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_m1_p1_ap1, type = "threeway")
 
 # DTW Distance measure
@@ -160,7 +160,7 @@ image(y = Picard1_standardized[,1], x = Minilya1_standardized[,1], z = compare.w
 lines(Minilya1_standardized$Minilya1_scaled.Center_win[al_m1_p1_ap1$index1], Picard1_standardized$Picard1_scaled.Center_win[al_m1_p1_ap1$index2], col = "white", lwd = 2)
 
 # Tuning the standardized data on reference depth scale
-Minilya1_on_Picard1_depth_cw = tune(Minilya1_standardized, cbind(Minilya1_standardized$Minilya1_scaled.Center_win[al_m1_p1_ap1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_m1_p1_ap1$index2s]), extrapolate = F)
+Minilya1_on_Picard1_depth_cw = astrochron::tune(Minilya1_standardized, cbind(Minilya1_standardized$Minilya1_scaled.Center_win[al_m1_p1_ap1$index1s], Picard1_standardized$Picard1_scaled.Center_win[al_m1_p1_ap1$index2s]), extrapolate = F)
 
 dev.off()
 
