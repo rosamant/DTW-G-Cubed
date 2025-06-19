@@ -173,23 +173,23 @@ image(x=U1464_1_standardized[,1],y=U1482_standardized[,1],z=t(compare.window),us
 
 # Depth values for first datum
 base_1_x <- DescTools::Closest(52, U1464_1_standardized[,1],which=TRUE)
-base_1_y <- DescTools::Closest(100, U1482_standardized[,1],which=TRUE)
+base_1_y <- DescTools::Closest(94, U1482_standardized[,1],which=TRUE)
 
 # Depth values for second datum
 base_2_x <- DescTools::Closest(128, U1464_1_standardized[,1],which=TRUE)
-base_2_y <- DescTools::Closest(145, U1482_standardized[,1],which=TRUE)
+base_2_y <- DescTools::Closest(131, U1482_standardized[,1],which=TRUE)
 
 # Depth values for third datum
 base_3_x <- DescTools::Closest(190, U1464_1_standardized[,1],which=TRUE)
-base_3_y <- DescTools::Closest(174, U1482_standardized[,1],which=TRUE)
+base_3_y <- DescTools::Closest(164, U1482_standardized[,1],which=TRUE)
 
 # Depth values for fourth datum
 base_4_x <- DescTools::Closest(282, U1464_1_standardized[,1],which=TRUE)
-base_4_y <- DescTools::Closest(236, U1482_standardized[,1],which=TRUE)
+base_4_y <- DescTools::Closest(255, U1482_standardized[,1],which=TRUE)
 
 # Depth values for fifth datum
 base_5_x <- DescTools::Closest(313, U1464_1_standardized[,1],which=TRUE)
-base_5_y <- DescTools::Closest(290, U1482_standardized[,1],which=TRUE)
+base_5_y <- DescTools::Closest(274, U1482_standardized[,1],which=TRUE)
 
 # Assigning depth uncertainty "slack" to the tie-points
 
