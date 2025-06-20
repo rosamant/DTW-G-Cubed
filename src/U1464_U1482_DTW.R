@@ -222,6 +222,9 @@ compare.window <- unname(as.matrix(compare.window))
 
 image(x=U1464_1_standardized[,1],y=U1482_standardized[,1],z=t(compare.window),useRaster=TRUE)
 
+# Define a knowledge-based window function for use in DTW
+win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
+
 # Perform dtw with knowledge-based window
 system.time(al_U1482_U1464_ap12 <- dtw::dtw(U1482_standardized$U1482_scaled.Average, U1464_1_standardized$U1464_1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_U1482_U1464_ap12, type = "threeway")
@@ -310,6 +313,27 @@ plot(U1464_U1482_Depth_ap12, type = "l")
 # Calculate RMSE
 ###########################
 
+find_closest_by_x <- function(obs_x, predicted_data) {
+  diff_x <- abs(predicted_data$U1464_Depth - obs_x)
+  
+  closest_index <- which.min(diff_x)
+  
+  return(predicted_data[closest_index, "U1482_Depth"])
+}
+
+calculate_rmse_for_line <- function(predicted_data, observed_data) {
+  predicted_depths <- vector("numeric", nrow(observed_data))
+  
+  for (i in 1:nrow(observed_data)) {
+    obs_x <- observed_data$U1464_Depth[i]
+    predicted_depths[i] <- find_closest_by_x(obs_x, predicted_data)
+  }
+  
+  observed_depths <- observed_data$U1482_Depth
+  rmse <- sqrt(mean((observed_depths - predicted_depths)^2))
+  return(rmse)
+}
+
 predicted_lines1 <- list(
   U1464_U1482_Depth_ap,
   U1464_U1482_Depth_ap05,
@@ -348,7 +372,22 @@ par(mar=c(5,5,1,1))
 layout(matrix(c(1,2,3), 3, 1, byrow = TRUE), widths=c(1,1,1), heights=c(1.4,1,1.25))
 
 plot(U1464_U1482_depth[,1], U1464_U1482_depth[,2], type ="n", ylim = c(300,0), xlim = c(0, 400), xaxs = "i", yaxs = "i", axes = F, xlab = "", ylab = "")
-points(U1464_U1482_depth[,1], U1464_U1482_depth[,2], pch = 15, cex = 2, bg = "black")
+#points(U1464_U1482_depth[,1], U1464_U1482_depth[,2], pch = 15, cex = 2, bg = "black")
+
+segments(51.33,93.49,59.46,93.49, lwd = 2)
+segments(97.42,131.52,126.3,131.52, lwd = 2)
+segments(126.3,141,163,141, lwd = 2)
+segments(173.23,165,189.65,165, lwd = 2)
+segments(228.35,255,281.39,255, lwd = 2)
+segments(293.15,274,312.75,274, lwd = 2)
+
+
+segments(55.43,88.91,55.43,98.07, lwd = 2)
+segments(111.92,126.82,111.92,136.2, lwd = 2)
+segments(144,136.2,144,145.9, lwd = 2)
+segments(181.43,155.32,181.43,174.34, lwd = 2)
+segments(255,250.4,255,259.78, lwd = 2)
+segments(302.95,269.53,302.95,278.63, lwd = 2)
 
 axis(1, at = c(400, seq(0,400,50)), cex.axis = 1.25)
 axis(2, at = c(300, seq(0,300,50)), cex.axis = 1.25)
