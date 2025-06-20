@@ -219,6 +219,9 @@ compare.window <- unname(as.matrix(compare.window))
 
 image(x=Picard1_standardized[,1],y=U1464_standardized[,1],z=t(compare.window),useRaster=TRUE)
 
+# Define a knowledge-based window function for use in DTW
+win.f <- function(iw,jw,query.size, reference.size, window.size, ...) compare.window >0
+
 # Perform dtw with knowledge-based window
 system.time(al_U1464_p1_ap12 <- dtw::dtw(U1464_standardized$U1464_scaled.Average, Picard1_standardized$Picard1_scaled.Average, keep.internals = T, step.pattern = asymmetricP1.1, window.type = win.f, open.end = T, open.begin = F))
 plot(al_U1464_p1_ap12, type = "threeway")
@@ -310,6 +313,27 @@ plot(Picard1_U1464_Depth_ap12, type = "l")
 ###########################
 
 
+find_closest_by_x <- function(obs_x, predicted_data) {
+  diff_x <- abs(predicted_data$Picard1_Depth - obs_x)
+  
+  closest_index <- which.min(diff_x)
+  
+  return(predicted_data[closest_index, "U1464_Depth"])
+}
+
+calculate_rmse_for_line <- function(predicted_data, observed_data) {
+  predicted_depths <- vector("numeric", nrow(observed_data))
+  
+  for (i in 1:nrow(observed_data)) {
+    obs_x <- observed_data$Picard1_Depth[i]
+    predicted_depths[i] <- find_closest_by_x(obs_x, predicted_data)
+  }
+  
+  observed_depths <- observed_data$U1464_Depth
+  rmse <- sqrt(mean((observed_depths - predicted_depths)^2))
+  return(rmse)
+}
+
 predicted_lines <- list(
   Picard1_U1464_Depth_ap,
   Picard1_U1464_Depth_ap05,
@@ -332,7 +356,6 @@ print(paste("Best predicted line: Line", best_line_index))
 print(paste("RMSE for the best predicted line:", best_rmse))
 print(rmse_values)
 
-
 ############################
 # Make Figure
 ###########################
@@ -347,7 +370,30 @@ par(mar=c(5,5,1,1))
 layout(matrix(c(1,2,3), 3, 1, byrow = TRUE), widths=c(1,1,1), heights=c(1.4,1,1.25))
 
 plot(U1463_U1464_depth[,1], U1463_U1464_depth[,2], type ="n", ylim = c(800,0), xlim = c(150, 1050), xaxs = "i", yaxs = "i", axes = F, xlab = "", ylab = "")
-points(U1463_U1464_depth[,1], U1463_U1464_depth[,2], pch = 15, cex = 2, bg = "black")
+#points(U1463_U1464_depth[,1], U1463_U1464_depth[,2], pch = 15, cex = 2, bg = "black")
+
+segments(333,51.33,333,59.46, lwd = 2)
+segments(333,51.33,333,60.84, lwd = 2)
+segments(391,126.3,391,136.87, lwd = 2)
+segments(404,97.42,404,126.3, lwd = 2)
+segments(440,126.3,440,163, lwd = 2)
+segments(426,173.23,426,189.65, lwd = 2)
+segments(463,189.65,463,228.35, lwd = 2)
+segments(493,228.35,493,281.39, lwd = 2)
+segments(545,293.15,545,312.75, lwd = 2)
+segments(1010,579.91,1010,707.57, lwd = 2)
+
+
+segments(328.24,55.43,338.05,55.43, lwd = 2)
+segments(328.24,55.63,338.05,55.63, lwd = 2)
+segments(384.89,131.6,397.26,131.6, lwd = 2)
+segments(397.26,111.92,411.63,111.92, lwd = 2)
+segments(434.61,144,447.75,144, lwd = 2)
+segments(397.11,181.43,454.11,181.43, lwd = 2)
+segments(447.7,209,480.71,209, lwd = 2)
+segments(454.11,255,532.22,255, lwd = 2)
+segments(532.22,302.95,558.44,302.95, lwd = 2)
+segments(1010,643.74,1010,643.71, lwd = 2)
 
 axis(1, at = c(1050, seq(150,1050,100)), cex.axis = 1.25)
 axis(2, at = c(750, seq(0,750,150)), cex.axis = 1.25)
