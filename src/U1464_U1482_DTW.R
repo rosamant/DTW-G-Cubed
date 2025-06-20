@@ -320,7 +320,7 @@ predicted_lines1 <- list(
   U1464_U1482_Depth_ap12
 )
 
-rmse_values1 <- numeric(length(predicted_lines))
+rmse_values1 <- numeric(length(predicted_lines1))
 
 for (i in 1:length(predicted_lines1)) {
   rmse_values1[i] <- calculate_rmse_for_line(predicted_lines1[[i]], U1464_U1482_depth)
